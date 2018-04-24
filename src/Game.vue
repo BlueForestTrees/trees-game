@@ -1,16 +1,15 @@
 <template>
     <span>
     <svg id="svg" width="100%" height="100%" viewBox="-1 -1 2 2">
-        <!--<g id="arbres" :transform="`translate(${t.x} ${t.y})`">-->
-            <!--<template v-for="y in 9">-->
-                <!--<image :x="treeMap[x][y].x" :y="treeMap[x][y].y" height="60" width="60" v-for="x in 9" xlink:href="img/arbre.svg"/>-->
-            <!--</template>-->
-        <!--</g>-->
-
+        <rect x="-1" y="-1" width="100%" height="100%" fill="#89C791"/>
+        <g id="arbres" :transform="`translate(${t.x} ${t.y})`">
+            <template v-for="y in 9">
+                <image :x="treeMap[x][y].x" :y="treeMap[x][y].y" height="0.1" width="0.1" v-for="x in 9" xlink:href="img/arbre.svg"/>
+            </template>
+        </g>
 
         <circle id="bonhomme" cx="0" cy="0" r="0.05" fill="blue"/>
         <rect id="positionDoigt" :x="doiX" :y="doiY" width="0.05" height="0.05" fill="red"/>
-        <image height="0.5" width="0.5" xlink:href="img/arbre.svg"/>
     </svg>
     </span>
 </template>
@@ -28,7 +27,7 @@
             for (let x = 0; x < 10; x++) {
                 treeMap.push([]);
                 for (let y = 0; y < 10; y++) {
-                    treeMap[x].push({x: this.gen(x), y: this.gen(y)});
+                    treeMap[x].push({x: this.gen(), y: this.gen()});
                 }
             }
 
@@ -37,17 +36,18 @@
             return ({
                 treeMap,
                 ctx: {moving: false, left: 0, right: 0, up: 0, down: 0},
-                t: {x: 100, y: 100},
-                step: 1,
-                add: 1.3,
-                max: 10,
+                t: {x: 0, y: 0},
+                step: 0.005,
+                add: 0.005,
+                max: 0.03,
                 doiX: 0,
                 doiY: 0
             })
         },
         methods: {
-            gen: x => 0.1,
+            gen: () => 6 * (Math.random() - 0.5),
             move: function (sens) {
+                console.log("move");
                 if (!this.ctx.moving) {
                     this.ctx.moving = true;
                     this.tic(this.ctx);
@@ -55,21 +55,25 @@
                 this.ctx = {...this.ctx, ...sens};
             },
             unmove: function (sens) {
+                console.log("unmove");
                 this.ctx = {...this.ctx, ...sens};
                 if (!this.ctx.left && !this.ctx.right && !this.ctx.up && !this.ctx.down) {
                     this.ctx.moving = false;
                 }
             },
             tic: function () {
+                console.log("tic");
                 this.t.x += this.ctx.right;
                 this.t.x -= this.ctx.left;
                 this.t.y += this.ctx.down;
                 this.t.y -= this.ctx.up;
 
-                this.ctx.right = Math.min(this.max, this.ctx.right * this.add);
-                this.ctx.left = Math.min(this.max, this.ctx.left * this.add);
-                this.ctx.up = Math.min(this.max, this.ctx.up * this.add);
-                this.ctx.down = Math.min(this.max, this.ctx.down * this.add);
+                this.ctx.right = Math.min(this.max, this.ctx.right + this.add);
+                this.ctx.left = Math.min(this.max, this.ctx.left + this.add);
+                this.ctx.up = Math.min(this.max, this.ctx.up + this.add);
+                this.ctx.down = Math.min(this.max, this.ctx.down + this.add);
+
+                //console.log(JSON.stringify(this.ctx, null, 4));
 
                 if (this.ctx.moving) {
                     setTimeout(this.tic.bind(null, this.ctx), 25);
