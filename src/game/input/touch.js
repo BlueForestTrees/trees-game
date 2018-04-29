@@ -27,7 +27,7 @@ export const installPan = (game, config) => {
         pan = {moving: false, x: 0, y: 0};
     };
 
-    //la configuration du toucher.
+    //les abonnements aux évènements du toucher.
     const touchScreen = new Hammer(document.body);
     touchScreen.get('pan').set({direction: Hammer.DIRECTION_ALL});
     touchScreen.on("panstart", panstart);

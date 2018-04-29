@@ -59,6 +59,7 @@ const installKeydown = (game, config) => {
 
     };
 
+    //les abonnements aux évènements clavier
     window.addEventListener("keydown", keydown, true);
 };
 const installKeyup = () => {
@@ -87,5 +88,6 @@ const installKeyup = () => {
         }
     };
 
+    //les abonnements aux évènements clavier
     window.addEventListener("keyup", keyup, true);
 };
