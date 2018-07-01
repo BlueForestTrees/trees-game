@@ -42,17 +42,20 @@ if (conf.mode === "development") {
 }
 
 if (conf.mode === "production") {
-    conf.plugins.push(new Visualizer({filename: '../visualizer/statistics.html'}));
+    conf.output = {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, 'dist/play.blueforest.org/static')
+    };
+    conf.plugins.push(new Visualizer({filename: '../../visualizer/statistics.html'}));
     conf.plugins.push(new webpack.DefinePlugin({
         'process.env': {
             NODE_ENV: '"production"'
         }
     }));
-    conf.output = {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist/play.blueforest.org')
-    };
     conf.resolve.alias.vue$ = "vue/dist/vue.min.js";
+    conf.plugins.push(new CopyWebpackPlugin([{from: 'nginx', to: '../nginx/'}]));
 }
+
+console.log(conf);
 
 module.exports = conf;

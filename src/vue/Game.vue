@@ -1,7 +1,7 @@
 <template>
     <span>
     <svg id="svg" ref="svg" width="100%" height="100%" viewBox="-1 -1 2 2">
-        <rect x="-2" y="-2" width="200%" height="200%" fill="#89C791"></rect>
+        <rect id="fond" x="-2" y="-2" width="200%" height="200%" fill="#89C791"></rect>
         <g id="arbres" :transform="`translate(${t.x} ${t.y})`">
             <image :x="tree.x" :y="tree.y" height="0.1" width="0.1" v-for="tree in trees" :xlink:href="tree.href"></image>
             <!--TODO créer des ressources sur le même modèle que les arbres. Du CO2, une dizaine d'éléments-->
